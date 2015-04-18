@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="thingStore">
+<head>
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+	<title>Wirestorm</title>
+</head>
+<body ng-controller="StoreController as store">
+	<header>
+      <h1 class="text-center">Thing Store</h1>
+    </header>
+
+    <!-- Product Container -->
+    <div class="list-group">
+    	<div class="list-group-item" ng-repeat="product in store.products">
+    	  <h3>{{product.name}} --- {{product.price | currency}}</h3>		
+
+			<!-- Tabs -->
+			<section ng-controller="TabController as tab">
+				<ul class="nav nav-pills">
+					<li ng-class="{ active:tab.isSet(1) }">
+						<a href ng-click="tab.setTab(1)">Description</a>	
+					</li>
+					<li ng-class="{ active:tab.isSet(2) }">
+						<a href ng-click="tab.setTab(2)">Comments</a>
+					</li>	
+				</ul>
+
+				<!-- Description Tabs -->
+
+				<div ng-show="tab.isSet(1)">
+					<h3>Description</h3>
+					<blockquote>{{product.description}}</blockquote>
+				</div>
+
+				<!-- Comment Tabs -->
+
+				<div ng-show="tab.isSet(2)">
+					<ul >
+						<h3>Comments</h3>
+						<li ng-repeat="comment in product.comments">
+							<blockquote>{{comment.body}}</blockquote>
+						</li>
+					</ul>
+
+				<!-- Comment form -->
+
+					<form name="commentForm" ng-controller="CommentController as commentCtrl" ng-submit="commentCtrl.addComment(product)">
+
+					<h3>Submit a Comment</h3>
+					<fieldset class="form-group">
+						<textarea ng-model="commentCtrl.comment.body" class="form-control" placeholder="Comments..." title="Comment"></textarea>	
+					</fieldset>
+					<fieldset class="form-group">
+					<input type="submit" class="btn btn-primary" value="Submit Comment"/>
+					</fieldset>
+						
+					</form>
+				</div>
+				
+			</section>
+    	</div>	
+    </div>
+ </body>
+</html>
